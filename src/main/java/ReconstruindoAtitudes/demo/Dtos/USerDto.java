@@ -1,5 +1,8 @@
 package ReconstruindoAtitudes.demo.Dtos;
 
-public record USerDto(String Email, String Senha) {
+import ReconstruindoAtitudes.demo.Models.InstituicaoModel;
+import ReconstruindoAtitudes.demo.Models.UsuarioTipo;
+
+public record USerDto(String Email, String Senha, UsuarioTipo usuarioTipo, Long instituicaoId) {
     
 }

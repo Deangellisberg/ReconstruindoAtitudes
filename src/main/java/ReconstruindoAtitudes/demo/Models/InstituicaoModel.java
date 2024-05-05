@@ -1,9 +1,12 @@
 package ReconstruindoAtitudes.demo.Models;
 
+import java.util.List;
+
 import javax.print.DocFlavor.STRING;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import ReconstruindoAtitudes.demo.Dtos.InstituicaoDto;
 import ReconstruindoAtitudes.demo.Dtos.USerDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,8 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,32 +25,30 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="usuarios")
+@Table(name="Instituicao")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+public class InstituicaoModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String Email;
+    private String Nome;
 
     private String Senha;
 
-    @Enumerated(EnumType.STRING)
-    private UsuarioTipo usuarioTipo;
+    private String cnpj;
 
-    @ManyToOne
-    @JoinColumn(name = "instituicao_id") // Nome da coluna na tabela de usuários que armazena o ID da instituição
-    @JsonIgnore
-    private InstituicaoModel instituicao;
+    @OneToMany(mappedBy = "instituicao") // Nome do campo na entidade de usuário que representa a relação
+    private List<UserModel> usuarios;
 
-    public UserModel(USerDto data) {
-        Email = data.Email();
+    public InstituicaoModel(InstituicaoDto data) {
+        Nome = data.Nome();
         Senha = data.Senha();
-        usuarioTipo = data.usuarioTipo();
-    }
+        this.cnpj = data.cnpj();
+    }   
 }
+

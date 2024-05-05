@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ReconstruindoAtitudes.demo.Dtos.USerDto;
 import ReconstruindoAtitudes.demo.Models.UserModel;
 import ReconstruindoAtitudes.demo.Services.UserService;
+import ReconstruindoAtitudes.demo.Services.Validacoes.ResponseApi;
 import jakarta.validation.Valid;
 
 @RestController
@@ -25,12 +26,12 @@ public class UserController {
     private UserService _UserService;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<UserModel> cadastrarUsuario(@RequestBody @Valid USerDto data) {
+    public ResponseEntity<Object> cadastrarUsuario(@RequestBody @Valid USerDto data) {
         try {
-            UserModel user = this._UserService.CadastrarUsuario(data);
-            return ResponseEntity.ok(user); 
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); 
+            UserModel user = _UserService.cadastrarUsuario(data);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
@@ -45,12 +46,12 @@ public class UserController {
     }
 
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<UserModel> AtualizarUsuario(@RequestBody @Valid USerDto data, @PathVariable(value = "id")  Long id){
+    public ResponseEntity<Object> AtualizarUsuario(@RequestBody @Valid USerDto data, @PathVariable(value = "id")  Long id){
         try {
             UserModel UsuarioAtualizado = this._UserService.AtualizarUsuario(data, id);
             return ResponseEntity.ok(UsuarioAtualizado);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
