@@ -19,7 +19,7 @@ import ReconstruindoAtitudes.demo.Services.UserService;
 import ReconstruindoAtitudes.demo.Services.Validacoes.ResponseApi;
 import jakarta.validation.Valid;
 
-@RestController
+@RestController("usuarios")
 public class UserController {
     
     @Autowired
@@ -55,6 +55,7 @@ public class UserController {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity DeletarUsuario(@PathVariable(value = "id")  Long id){
         try {
